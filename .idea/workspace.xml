@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15379a65-be8d-49c3-b31d-6b97b7e6b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/db/DBException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/db/DBUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scheduling/Course.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ui/ScheduleGUI.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ui/ScheduleGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/Scheduler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/Scheduler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/Scheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/Scheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/ScheduleGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ScheduleGUI.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/ScheduleGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ScheduleGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
