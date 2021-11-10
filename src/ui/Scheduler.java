@@ -1,6 +1,6 @@
 package ui;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import static ui.Console.*;
 
@@ -10,10 +10,11 @@ public class Scheduler {
      the rest of the program.
     */
 
+    /*
     public static void main(String[] args) {
         String continuing = "y", userInput = "";
         int courseNumber, semestersLeft, maxCredits;
-        ArrayList<String[]> courseCodes = new ArrayList<>();
+        HashMap<String, Integer> courseCodes;
 
         System.out.println("Welcome to the Clemson University undergraduate student scheduler!");
         System.out.println("This program will walk you through building a semester-by-semester schedule according to your current academic progress and preferences.");
@@ -21,10 +22,15 @@ public class Scheduler {
 
         System.out.print("To begin, ");
         semestersLeft = getInt("please input the amount of semesters you have left in your curriculum.", 0, 10);
-        maxCredits = getInt("What is the maximum amount of credits you would like to take in one semester?", 0, 25);
+        maxCredits = getInt("What is the maximum amount of classes you would like to take in one semester? (Max 7)", 0, 8);
+        //if time allows, prompt for major.
+        //start with just auto major though
+        System.out.println("\nYour major is: Computer Science");
 
-        System.out.println("\nNow, please enter the classes you have already taken.");
-        System.out.println("Input should be in the format of a course code with the subject and then the number, separated by a space.");
+        /*
+        ***would be better to show a list of courses before asking user to input them... will prob need to find a way to do this
+
+        System.out.println("\nNow, please enter the numbers corresponding to the classes you have already taken, each separated by a space.");
         System.out.println("Course numbers must be below 7000, and greater than or equal to 1000.");
 
         //loop that handles input courses and adds each valid input course to the courseCodes array.
@@ -63,8 +69,8 @@ public class Scheduler {
                 courseCodes.add(parsedString);
                 System.out.println(userInput + " has been added to your completed course list.");
             }
-        }
-
+        } */
+/*
         for(int i = 0; i < semestersLeft; i++) {
             //for each semester, walk the user through a pseudo-schedule, prompting for the gen eds they have left.
             System.out.println("◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦");
@@ -74,5 +80,5 @@ public class Scheduler {
 
             System.out.println("◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦•◦");
         }
-    }
+    }*/
 }
