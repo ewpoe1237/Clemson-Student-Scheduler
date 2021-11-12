@@ -23,6 +23,21 @@ public class ScheduleGUI {
     private JPanel courseInputs;
     private JPanel inputCard;
     private JRadioButton areYouInTheRadioButton;
+    private JButton adminContinue;
+    private JPanel adminCard;
+    private JPanel adminLogin;
+    private JTextArea usernameInput;
+    private JPasswordField passwordInput;
+    private JButton loginButton;
+    private JPanel configCard;
+    private JPanel configPanel;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JButton confirmExitButton;
+    private JButton confirmAddButton;
+    private JSlider slider1;
 
     private int semestersLeft = 10, maxCredits = 15;
     private boolean honorsStudent = false;
@@ -39,6 +54,8 @@ public class ScheduleGUI {
         myGUI.wrapper.add(myGUI.rootCard, "rootCard");
         myGUI.wrapper.add(myGUI.inputCard, "inputCard");
         myGUI.wrapper.add(myGUI.courseInputCard, "courseInputCard");
+        myGUI.wrapper.add(myGUI.adminCard, "adminCard");
+        myGUI.wrapper.add(myGUI.configCard, "configCard");
     }
 
     public ScheduleGUI() {
@@ -63,6 +80,32 @@ public class ScheduleGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 honorsStudent = !honorsStudent;
+            }
+        });
+        adminContinue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "adminCard");
+            }
+        });
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userText = usernameInput.getText();
+                String passText = String.valueOf(passwordInput.getPassword());
+
+                //add sql stuff here!
+
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "configCard");
+            }
+        });
+        confirmExitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "rootCard");
             }
         });
     }
