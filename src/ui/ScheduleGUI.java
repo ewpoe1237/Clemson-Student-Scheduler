@@ -31,13 +31,14 @@ public class ScheduleGUI {
     private JButton loginButton;
     private JPanel configCard;
     private JPanel configPanel;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
+    private JTextField courseField;
+    private JTextField coreqField;
+    private JTextField reqPreField;
+    private JTextField groupPreField;
     private JButton confirmExitButton;
     private JButton confirmAddButton;
-    private JSlider slider1;
+    private JSlider suggestedSemester;
+    private JTextField attributeField;
 
     private int semestersLeft = 10, maxCredits = 15;
     private boolean honorsStudent = false;
@@ -106,6 +107,22 @@ public class ScheduleGUI {
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) wrapper.getLayout();
                 cl.show(wrapper, "rootCard");
+            }
+        });
+        confirmAddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String courseCode = courseField.getText();
+                String attributes = attributeField.getText();
+                String coreqs = coreqField.getText();
+                String requiredPrereqs = reqPreField.getText();
+                String groupPrereqs = groupPreField.getText();
+
+                courseField.setText("");
+                attributeField.setText("");
+                coreqField.setText("");
+                reqPreField.setText("");
+                groupPreField.setText("");
             }
         });
     }
