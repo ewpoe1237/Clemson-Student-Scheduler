@@ -17,9 +17,9 @@ public class DBUtil {
         else {
             try {
                 // set the db url, username, and password
-                String url = "jdbc:mysql://database-setup-walkthrough.ch35q4vibozj.us-east-1.rds.amazonaws.com/cpsc2810schema";
+                String url = "jdbc:mysql://scheduler-db.ch35q4vibozj.us-east-1.rds.amazonaws.com/schedulerschema";
                 String username = "admin";
-                String password = "jhofset1";
+                String password = "^Eead7aNU;v-94";
                 Class.forName("com.mysql.cj.jdbc.Driver");
 
                 // get and return connection
