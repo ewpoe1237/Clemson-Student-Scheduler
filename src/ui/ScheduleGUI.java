@@ -4,16 +4,13 @@ import db.DBException;
 import db.DBUtil;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class ScheduleGUI {
     private JPanel wrapper;
@@ -28,15 +25,15 @@ public class ScheduleGUI {
     private JPanel courseInputCard;
     private JPanel courseInputs;
     private JPanel inputCard;
-    private JRadioButton areYouInTheRadioButton;
+    private JRadioButton honorsButton;
     private JButton adminContinue;
     private JPanel adminCard;
     private JPanel adminLogin;
     private JTextArea usernameInput;
     private JPasswordField passwordInput;
     private JButton loginButton;
-    private JPanel configCard;
-    private JPanel configPanel;
+    private JPanel additionCard;
+    private JPanel additionPanel;
     private JTextField courseField;
     private JTextField coreqField;
     private JTextField reqPreField;
@@ -48,12 +45,29 @@ public class ScheduleGUI {
     private JButton confirmContinueButton;
     private JTextField titleField;
     private JTextField creditHourField;
+    private JRadioButton exportButton;
+    private JPanel adminPortalCard;
+    private JPanel adminPortal;
+    private JButton addCoursesButton;
+    private JPanel editorCard;
+    private JPanel editorPanel;
+    private JComboBox editSelector;
+    private JPanel DBViewerCard;
+    private JPanel viewerPanel;
+    private JButton editCoursesButton;
+    private JButton viewCoursesButton;
+    private JButton cancelAndExitButton;
+    private JButton exitToMainMenuButton;
 
     private int semestersLeft = 10, maxCredits = 15;
-    private boolean honorsStudent = false;
+    private boolean honorsStudent = false, wantToExport = false;
+
+    private HashMap<String, Integer> inputCourses;
+    private HashMap<String, Integer> usedCourses;
 
     static ScheduleGUI myGUI = new ScheduleGUI();
     static JFrame frame;
+
     public static void main(String[] args) {
         frame = new JFrame("ScheduleGUI");
         frame.setContentPane(myGUI.wrapper);
@@ -65,7 +79,10 @@ public class ScheduleGUI {
         myGUI.wrapper.add(myGUI.inputCard, "inputCard");
         myGUI.wrapper.add(myGUI.courseInputCard, "courseInputCard");
         myGUI.wrapper.add(myGUI.adminCard, "adminCard");
-        myGUI.wrapper.add(myGUI.configCard, "configCard");
+        myGUI.wrapper.add(myGUI.additionCard, "additionCard");
+        myGUI.wrapper.add(myGUI.adminPortalCard, "adminPortalCard");
+        myGUI.wrapper.add(myGUI.editorCard, "editorCard");
+        myGUI.wrapper.add(myGUI.DBViewerCard, "DBViewerCard");
     }
 
     public ScheduleGUI() {
@@ -86,7 +103,7 @@ public class ScheduleGUI {
                 maxCredits = creditSlider.getValue();
             }
         });
-        areYouInTheRadioButton.addActionListener(new ActionListener() {
+        honorsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 honorsStudent = !honorsStudent;
@@ -102,13 +119,13 @@ public class ScheduleGUI {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String userText = usernameInput.getText();
-                String passText = String.valueOf(passwordInput.getPassword());
+                String userText = usernameInput.getText().trim();
+                String passText = String.valueOf(passwordInput.getPassword()).trim();
 
                 //add sql stuff here!
 
                 CardLayout cl = (CardLayout) wrapper.getLayout();
-                cl.show(wrapper, "configCard");
+                cl.show(wrapper, "adminPortalCard");
             }
         });
         confirmExitButton.addActionListener(new ActionListener() {
@@ -218,7 +235,7 @@ public class ScheduleGUI {
                         JOptionPane.INFORMATION_MESSAGE);
 
                 CardLayout cl = (CardLayout) wrapper.getLayout();
-                cl.show(wrapper, "rootCard");
+                cl.show(wrapper, "adminPortalCard");
             }
         });
         confirmAddButton.addActionListener(new ActionListener() {
@@ -325,6 +342,54 @@ public class ScheduleGUI {
                 groupPreField.setText("");
                 titleField.setText("");
                 creditHourField.setText("");
+            }
+        });
+        addCoursesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "additionCard");
+            }
+        });
+        honorsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                honorsStudent = !honorsStudent;
+            }
+        });
+        exportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                wantToExport = !wantToExport;
+            }
+        });
+        editCoursesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "editorCard");
+            }
+        });
+
+        viewCoursesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "DBViewerCard");
+            }
+        });
+        cancelAndExitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "adminPortalCard");
+            }
+        });
+        exitToMainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "rootCard");
             }
         });
     }

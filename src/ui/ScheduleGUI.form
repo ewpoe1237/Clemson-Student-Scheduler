@@ -30,7 +30,10 @@
             <children>
               <component id="8d22a" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="Clemson Undergraduate CS Scheduler"/>
@@ -38,7 +41,10 @@
               </component>
               <component id="7e1c8" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="====================="/>
@@ -97,7 +103,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="c510c" binding="inputPrompts" layout-manager="GridLayoutManager" row-count="11" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="c510c" binding="inputPrompts" layout-manager="GridLayoutManager" row-count="12" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <card name="Card1"/>
@@ -117,7 +123,10 @@
               </component>
               <component id="e4fc" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="Clemson Undergraduate CS Scheduler"/>
@@ -125,7 +134,10 @@
               </component>
               <component id="6933e" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="====================="/>
@@ -182,7 +194,7 @@
               </vspacer>
               <component id="3422e" class="javax.swing.JButton" binding="continueButtonTwo">
                 <constraints>
-                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Continue"/>
@@ -198,12 +210,20 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
-              <component id="f76bb" class="javax.swing.JRadioButton" binding="areYouInTheRadioButton" default-binding="true">
+              <component id="f76bb" class="javax.swing.JRadioButton" binding="honorsButton">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Are you in the Honors College?"/>
+                </properties>
+              </component>
+              <component id="af76a" class="javax.swing.JRadioButton" binding="exportButton">
                 <constraints>
                   <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Are you in the Honors College?"/>
+                  <text value="Would you like to have your schedule exported into a file?"/>
                 </properties>
               </component>
             </children>
@@ -217,7 +237,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="4541c" binding="courseInputs" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="4541c" binding="courseInputs" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <card name="Card1"/>
@@ -227,7 +247,10 @@
             <children>
               <component id="762da" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="Clemson Undergraduate CS Scheduler"/>
@@ -248,17 +271,18 @@
               </component>
               <component id="83a59" class="javax.swing.JList" binding="inputList">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
                   <layoutOrientation value="2"/>
+                  <model/>
                 </properties>
               </component>
               <component id="8669c" class="javax.swing.JButton" binding="confirmContinueButton">
                 <constraints>
-                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Confirm and Continue"/>
@@ -266,9 +290,17 @@
               </component>
               <vspacer id="9a105">
                 <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
+              <component id="8f0a8" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="In the below list, please select all courses you have gotten credit for."/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>
@@ -290,7 +322,10 @@
             <children>
               <component id="90b5c" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="Clemson Undergraduate CS Scheduler - ADMIN"/>
@@ -298,7 +333,10 @@
               </component>
               <component id="2f74b" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="====================="/>
@@ -371,14 +409,14 @@
           </grid>
         </children>
       </grid>
-      <grid id="f2213" binding="configCard" layout-manager="CardLayout" hgap="0" vgap="0">
+      <grid id="f2213" binding="additionCard" layout-manager="CardLayout" hgap="0" vgap="0">
         <constraints>
           <card name="Card5"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="b3799" binding="configPanel" layout-manager="GridLayoutManager" row-count="21" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="b3799" binding="additionPanel" layout-manager="GridLayoutManager" row-count="21" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <card name="Card1"/>
@@ -388,7 +426,10 @@
             <children>
               <component id="a41ae" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="Clemson Undergraduate CS Scheduler - CONFIG"/>
@@ -396,7 +437,10 @@
               </component>
               <component id="4affa" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <text value="====================="/>
@@ -404,7 +448,7 @@
               </component>
               <vspacer id="cc46b">
                 <constraints>
-                  <grid row="11" column="0" row-span="1" col-span="7" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="11" column="0" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="2e76c" class="javax.swing.JLabel">
@@ -417,7 +461,7 @@
               </component>
               <component id="96dd1" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="17" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="17" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Enter Corequisites"/>
@@ -425,7 +469,7 @@
               </component>
               <component id="ac767" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="17" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="17" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Enter Required Prerequisites"/>
@@ -433,7 +477,7 @@
               </component>
               <component id="1c127" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="In the below fields, please enter the necessary information."/>
@@ -441,7 +485,7 @@
               </component>
               <component id="e3ce" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="5" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="5" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="FORMATTING:"/>
@@ -449,7 +493,7 @@
               </component>
               <component id="e0bcf" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="9" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="9" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Required Prerequisites: Prerequisites where each individual course is required to pass."/>
@@ -457,7 +501,7 @@
               </component>
               <component id="1cee3" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="10" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="10" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Group Prerequisites: Groups of prerequisites where only one of each group is required to take the course."/>
@@ -465,7 +509,7 @@
               </component>
               <component id="ef648" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="17" column="4" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="17" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Enter Group Prerequisites"/>
@@ -473,7 +517,7 @@
               </component>
               <component id="a6d1c" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="6" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Separate individual prereqs, coreqs, and attributes with hyphens- E.G 'CPSC 1060-CPSC 1070'"/>
@@ -481,12 +525,12 @@
               </component>
               <vspacer id="f2b5a">
                 <constraints>
-                  <grid row="8" column="0" row-span="1" col-span="7" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="8" column="0" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="a9d40" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="7" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="7" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Separate group prerequisites with exclamation marks-E.G. '!MATH 1070-MATH 1080!CPSC 1020-CPSC 1010!'"/>
@@ -502,7 +546,7 @@
               </component>
               <component id="27df9" class="javax.swing.JTextField" binding="coreqField">
                 <constraints>
-                  <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="18" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -510,7 +554,7 @@
               </component>
               <component id="bf5d4" class="javax.swing.JTextField" binding="reqPreField">
                 <constraints>
-                  <grid row="18" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="18" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -518,7 +562,7 @@
               </component>
               <component id="ca16b" class="javax.swing.JTextField" binding="groupPreField">
                 <constraints>
-                  <grid row="18" column="4" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="18" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -526,25 +570,25 @@
               </component>
               <vspacer id="dd03d">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="7" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <vspacer id="38b31">
                 <constraints>
-                  <grid row="19" column="0" row-span="1" col-span="7" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="19" column="0" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="ae7db" class="javax.swing.JButton" binding="confirmExitButton">
                 <constraints>
-                  <grid row="20" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Confirm and Exit to Menu"/>
+                  <text value="Confirm and Exit to Portal"/>
                 </properties>
               </component>
               <component id="bd94b" class="javax.swing.JButton" binding="confirmAddButton">
                 <constraints>
-                  <grid row="20" column="3" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="20" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Confirm and Add Another"/>
@@ -552,7 +596,7 @@
               </component>
               <vspacer id="3e4fd">
                 <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="7" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="0" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="53c53" class="javax.swing.JLabel">
@@ -573,7 +617,7 @@
               </component>
               <component id="eb63b" class="javax.swing.JTextField" binding="titleField">
                 <constraints>
-                  <grid row="13" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="13" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -581,7 +625,7 @@
               </component>
               <component id="b6387" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="12" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="12" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Enter Course Title (E.G. 'Software Development: From Coder to Craftsman')"/>
@@ -589,12 +633,12 @@
               </component>
               <vspacer id="a84b0">
                 <constraints>
-                  <grid row="16" column="0" row-span="1" col-span="7" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="16" column="0" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="2be9c" class="javax.swing.JTextField" binding="creditHourField">
                 <constraints>
-                  <grid row="15" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="15" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -602,10 +646,219 @@
               </component>
               <component id="6da2e" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="14" column="0" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="14" column="0" row-span="1" col-span="8" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Enter Number of Credit Hours"/>
+                </properties>
+              </component>
+              <component id="31e48" class="javax.swing.JButton" binding="cancelAndExitButton">
+                <constraints>
+                  <grid row="20" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Cancel and Exit to Portal"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="67f01" binding="adminPortalCard" layout-manager="CardLayout" hgap="0" vgap="0">
+        <constraints>
+          <card name="Card6"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="d757a" binding="adminPortal" layout-manager="GridLayoutManager" row-count="10" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Card1"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="15940" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="Clemson Undergraduate CS Scheduler - ADMIN PORTAL"/>
+                </properties>
+              </component>
+              <component id="41570" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="====================="/>
+                </properties>
+              </component>
+              <component id="55bf6" class="javax.swing.JButton" binding="addCoursesButton" default-binding="true">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Add Courses"/>
+                </properties>
+              </component>
+              <component id="e995f" class="javax.swing.JButton" binding="editCoursesButton">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Edit Courses"/>
+                </properties>
+              </component>
+              <component id="5d909" class="javax.swing.JButton" binding="viewCoursesButton">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="View Courses"/>
+                </properties>
+              </component>
+              <vspacer id="4a81d">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="e8544">
+                <constraints>
+                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="f336a">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="fea4">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="3d497" class="javax.swing.JButton" binding="exitToMainMenuButton" default-binding="true">
+                <constraints>
+                  <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Exit to Main Menu"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="991fe" binding="editorCard" layout-manager="CardLayout" hgap="0" vgap="0">
+        <constraints>
+          <card name="Card7"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="c2f10" binding="editorPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Card1"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a84c5" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="Clemson Undergraduate CS Scheduler - CONFIG"/>
+                </properties>
+              </component>
+              <component id="9aaee" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="====================="/>
+                </properties>
+              </component>
+              <component id="6421c" class="javax.swing.JComboBox" binding="editSelector">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="3c843" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="In the dropdown menu below, please select the course you would like to edit."/>
+                </properties>
+              </component>
+              <vspacer id="eb7c8">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="74b2e">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="d3054" binding="DBViewerCard" layout-manager="CardLayout" hgap="0" vgap="0">
+        <constraints>
+          <card name="Card8"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="f1008" binding="viewerPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="Card1"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <vspacer id="b4f6d">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="4bc39" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="Clemson Undergraduate CS Scheduler - VIEW COURSES"/>
+                </properties>
+              </component>
+              <component id="b6156" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="20"/>
+                    <preferred-size width="-1" height="20"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="====================="/>
                 </properties>
               </component>
             </children>
