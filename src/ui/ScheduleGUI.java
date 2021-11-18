@@ -58,6 +58,11 @@ public class ScheduleGUI {
     private JButton viewCoursesButton;
     private JButton cancelAndExitButton;
     private JButton exitToMainMenuButton;
+    private JButton confirmEditButton;
+    private JButton cancelToPortalButton;
+    private JButton confirmToPortalButton;
+    private JComboBox comboBox1;
+    private JTextField textField1;
 
     private int semestersLeft = 10, maxCredits = 15;
     private boolean honorsStudent = false, wantToExport = false;
@@ -390,6 +395,20 @@ public class ScheduleGUI {
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) wrapper.getLayout();
                 cl.show(wrapper, "rootCard");
+            }
+        });
+        cancelToPortalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "adminPortalCard");
+            }
+        });
+        confirmToPortalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) wrapper.getLayout();
+                cl.show(wrapper, "adminPortalCard");
             }
         });
     }
