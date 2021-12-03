@@ -1,5 +1,6 @@
 package scheduling;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -7,54 +8,38 @@ import java.util.HashMap;
     that the student has taken or may need.
  */
 public class Course {
-    private String courseCode, description, genEds, coreqList, prereqList;
-    private int creditHours, placementScore;
+    private String courseCode, description, attr, coreqList, requiredList, optionalList;
+    private int creditHours;
 
     //may not need hasPlacementScore... check later
     //also questioning hasRequirements so "
-    private boolean hasCoreqs, hasPrereqs, hasCreditHours;
-    private boolean hasPlacementScore, hasRequirements;
+    private boolean hasRequired, hasOptional;
 
     private HashMap<String, Integer> inputCodes;
 
     public Course(HashMap<String, Integer> inputCodes,
                   String courseCode,
                   String description,
-                  String genEds,
+                  String attr,
                   String coreqList,
-                  String prereqList,
+                  String requiredList,
+                  String optionalList,
                   int creditHours) {
         this.inputCodes = inputCodes;
         this.courseCode = courseCode;
         this.description = description;
 
         //genEds is just the list of gen ed attributes the course may have
-        this.genEds = genEds;
+        this.attr = attr;
 
         this.coreqList = coreqList;
-        this.prereqList = prereqList;
+        this.requiredList = requiredList;
+        this.optionalList = optionalList;
         this.creditHours = creditHours;
 
-        //since the object was created without including a placement score
-        hasPlacementScore = false;
-        //initializing to false, but instead of doing that make another method in here that checks :)
-        hasRequirements = false;
-    }
-
-    public Course(HashMap<String, Integer> inputCodes, String courseCode, String description, String genEds, String coreqList, String prereqList, int creditHours, int placementScore) {
-        this.inputCodes = inputCodes;
-        this.courseCode = courseCode;
-        this.description = description;
-        this.genEds = genEds;
-        this.coreqList = coreqList;
-        this.prereqList = prereqList;
-        this.creditHours = creditHours;
-        this.placementScore = placementScore;
-
-        //since the object was created including a placement score
-        hasPlacementScore = true;
-        //initializing to false, but instead of doing that make another method in here that checks :)
-        hasRequirements = false;
+        //initialize has optional/required to false, as we do not know if the student has completed these yet
+        hasRequired = false;
+        hasOptional = false;
     }
 
     public void setCourseCode(String courseCode) {
@@ -65,27 +50,20 @@ public class Course {
         this.description = description;
     }
 
-    public void setGenEds(String genEds) {
-        this.genEds = genEds;
+    public void setAttr(String attr) {
+        this.attr = attr;
     }
 
     public void setCoreqList(String coreqList) {
         this.coreqList = coreqList;
     }
 
-    public void setPrereqList(String prereqList) {
-        this.prereqList = prereqList;
+    public void setRequired(String requiredList) {
+        this.requiredList = requiredList;
     }
 
     public void setCreditHours(int creditHours) {
         this.creditHours = creditHours;
-    }
-
-    public void setPlacementScore(int placementScore) {
-        this.placementScore = placementScore;
-
-        //in the object had not originally set a placementScore...
-        this.hasPlacementScore = true;
     }
 
     public String getCourseCode() {
@@ -96,63 +74,31 @@ public class Course {
         return description;
     }
 
-    private Boolean processPrerequisites(HashMap<String, Integer> inputCodes) {
-        /*
-            String of concatenated prerequisites:
-            --
-            : used to separate codes that are required as prerequisites
-            Example -> CPSC 1060:CPSC 1070 means both CPSC 1060 and 1070 are required
+    public int getCreditHours() {
+        return creditHours;
+    }
 
-            ! used to !break apart groups! of course codes that are among a group where
-            only one of those courses is required as a prerequisite.
-                Options are surrounded by -
-            Example -> !-MATH 1070-MATH 1080-! means either math 1070 OR math 1080 is necessary
-            as a prerequisite
-                Could just export string into Java and use .contains() to check whether the group
-                contains surrounding -s then split it
+    public boolean hasAllRequirements() {
+        hasOptional = processOptional(inputCodes);
+        hasRequired = processRequired(inputCodes);
 
-            full example -> CPSC 1060:CPSC 1070!MATH 1070-MATH 1080!CPSC 1020-CPSC 1110
-            ...means both CPSC 1060 AND 1070 are required, but only one of MATH 1070/1080 and CPSC 1020/1110
-            is required.
-        */
+        return (hasOptional && hasRequired);
+    }
 
-        String[] separatedOptionGroups = prereqList.split("!");
-        String[] separatedOptions, separatedRequirements;
+    private boolean processRequired(HashMap<String, Integer> inputCodes) {
+        //Separate individual (all required) prereqs, coreqs, and attributes with hyphens- E.G 'CPSC 1060-CPSC 1070'
 
-        //iterate through separatedOptionals
-        //these will be very tiny arrays so don't rlly have to worry about time complexity like that
-        for(int i = 0; i < separatedOptionGroups.length; i++) {
-            //find whether each portion contains - or :
+        //edge case: we don't have required preqs. then we can just return true:
+        if(requiredList.length() == 0) return true;
 
-            if(separatedOptionGroups[i].contains(":")) {
-                //: means these are all required.
-                separatedRequirements = separatedOptionGroups[i].split(":");
+        String[] separatedRequirements = requiredList.split("-");
 
-                //simply iterate thru separated requirements and if one does not match return false
-                for(int h = 0; h < separatedRequirements.length; h++) {
-                    if(inputCodes.get(separatedRequirements[h]) == null) return false;
-                }
-            } else if(separatedOptionGroups[i].contains("-")) {
-                //- means these are optional. only one has to be true
-                separatedOptions = separatedOptionGroups[i].split("-");
+        for(int i = 0; i < separatedRequirements.length; i++) {
+            if(separatedRequirements[i].length() == 0) continue; //takes care of any extra hyphens
 
-                //now iterate through options and as long as one matches we are all good
-                //use a flag to check if there is one match
-                int flag = 0;
-                for(int j = 0; j < separatedOptions.length; j++) {
-                    if(inputCodes.get(separatedOptions[i]) != null) {
-                        //if separatedOptions[i] exists in pre-existing course codes, then
-                        //we can set the flag to 1. otherwise the flag will just stay at 0.
-                        flag = 1;
-                    }
-                }
-
-                if(flag == 0) return false;
-            } else {
-                //this case only happens if there is only one prerequisite
-                //in this case compare to courseCodes and see whether one matches
-                //hash maps make this easy !!!
-                if(inputCodes.get(separatedOptionGroups[i]) == null) return false;
+            //iterate thru split requirements to make sure every single one is fulfilled. if one hasn't been fulfilled return false
+            if(!inputCodes.containsKey(separatedRequirements[i])) {
+                return false;
             }
         }
 
@@ -160,9 +106,69 @@ public class Course {
         return true;
     }
 
-    //returns an array of corequisites (will mostly, if not always, be length of 1 or 2) for scheduler to use
-    //may not even need yet idk?
-    public String[] processCorequisites(String coreqList) {
-        return coreqList.split(":");
+    private boolean processOptional(HashMap<String, Integer> inputCodes) {
+        //Separate group prerequisites with exclamation marks-E.G. '!MATH 1070-MATH 1080!CPSC 1020-CPSC 1010!'
+
+        //edge case: we don't have optional preqs. then we can just return true:
+        if(optionalList.length() == 0) return true;
+
+        String[] separatedGroups = optionalList.split("!");
+        int fulfilledCounter = 0, amountOfGroups = 0;
+
+        for(int i = 0; i < separatedGroups.length; i++) {
+            if(separatedGroups[i].length() == 0) continue; //takes care of any extra exclamation marks
+
+            //other than empty portions we want to keep track of every group fulfilled so we need to count the amt of groups for that course
+            amountOfGroups++;
+
+            String[] separatedRequirements = separatedGroups[i].split("-"); //splits each group up further into every optional class
+            for(int j = 0; j < separatedRequirements.length; j++) { //iterate through every individual class in each group
+                if(separatedRequirements[i].length() == 0) continue; //error handling
+
+                if(inputCodes.containsKey(separatedRequirements[i])) {
+                    //if we find any that fulfill according to inputCodes, we can increase fulfilled counter and break into the next group
+                    fulfilledCounter++;
+                    break;
+                }
+            }
+        }
+
+        if(fulfilledCounter == amountOfGroups) {
+            //if we have the same amount of fulfilled groups as our total amount we know the student has met requirements
+            return true;
+        }
+
+        //otherwise, we know the student has not met requirements--thus return false
+        return false;
+    }
+
+    //returns an arraylist of corequisites for scheduler to use
+    //only returns those the student has not yet taken
+    public ArrayList<String> getProcessedCoreqs(HashMap<String, Integer> inputCodes) {
+        String[] coreqCodes = coreqList.split("-");
+        ArrayList<String> processedCodes = new ArrayList<>();
+
+        for(int i = 0; i < coreqCodes.length; i++) {
+            if(coreqCodes[i].length() == 0) continue;
+            else if(inputCodes.containsKey(coreqCodes[i])) continue; //if the student has already taken the coreq they will not need that coreq
+
+            processedCodes.add(coreqCodes[i]); //if none of those if statements went through, we are good to add to processed codes
+        }
+
+        return processedCodes;
+    }
+
+    //returns the attributes this course has in an arraylist for the scheduler to use
+    public ArrayList<String> getProcessedAttributes() {
+        String[] attrCodes = attr.split("-");
+        ArrayList<String> processedCodes = new ArrayList<>();
+
+        for(int i = 0; i < attrCodes.length; i++) {
+            if(attrCodes[i].length() == 0) continue;
+
+            processedCodes.add(attrCodes[i]);
+        }
+
+        return processedCodes;
     }
 }

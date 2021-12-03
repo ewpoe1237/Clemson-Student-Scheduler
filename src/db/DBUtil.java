@@ -10,7 +10,7 @@ public class DBUtil {
 
     private DBUtil() {}
 
-    public static synchronized Connection getConnection() throws DBException {
+    public static synchronized Connection getConnection() throws SQLException {
         if (connection != null) {
             return connection;
         }
@@ -28,7 +28,7 @@ public class DBUtil {
 
                 return connection;
             } catch (SQLException | ClassNotFoundException e) {
-                throw new DBException(e);
+                throw new SQLException(e);
             }
         }
     }
