@@ -1,7 +1,7 @@
 package ui;
 
-import db.DBException;
 import db.DBUtil;
+import scheduling.Course;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ScheduleGUI {
@@ -51,7 +53,7 @@ public class ScheduleGUI {
     private JButton addCoursesButton;
     private JPanel editorCard;
     private JPanel editorPanel;
-    private JComboBox editSelector;
+    private JComboBox editCourseSelector;
     private JPanel DBViewerCard;
     private JPanel viewerPanel;
     private JButton editCoursesButton;
@@ -60,14 +62,10 @@ public class ScheduleGUI {
     private JButton exitToMainMenuButton;
     private JButton confirmEditButton;
     private JButton cancelToPortalButton;
-    private JButton confirmToPortalButton;
-    private JComboBox editorComboBox;
-    private JTextField textField1;
-    private JRadioButton introToComputingRadioButton;
-    private JRadioButton naturalScienceRadioButton;
-    private JRadioButton theoryRadioButton;
-    private JRadioButton writingRadioButton;
-    private JRadioButton csElectiveRadioButton;
+    private JButton confirmEditToPortalButton;
+    private JComboBox fieldEditComboBox;
+    private JTextField newEditValue;
+    private JComboBox requirementsBox;
 
     private int semestersLeft = 10, maxCredits = 15;
     private boolean honorsStudent = false, wantToExport = false;
@@ -125,12 +123,14 @@ public class ScheduleGUI {
 
     private int errorCheckCredits(String creditHours) {
         int hours = -1;
+        creditHours = creditHours.trim();
 
         if(creditHours == "") {
             JOptionPane.showMessageDialog(frame,
                     "Please input a non-empty value for credit hours.",
                     "ERROR",
                     JOptionPane.WARNING_MESSAGE);
+            creditHourField.setText("");
             return -1;
         } else {
             try {
@@ -145,7 +145,459 @@ public class ScheduleGUI {
             }
         }
 
+        if(hours < 0 || hours > 12) {
+            JOptionPane.showMessageDialog(frame,
+                    "Please input only positive numbers between 0 and 12 for the number of credit hours",
+                    "ERROR",
+                    JOptionPane.WARNING_MESSAGE);
+            creditHourField.setText("");
+            return -1;
+        }
+
         return hours;
+    }
+
+    private int errorCheckCreditEdit(String creditHours) {
+        int hours = -1;
+        creditHours = creditHours.trim();
+
+        if(creditHours == "") {
+            JOptionPane.showMessageDialog(frame,
+                    "Please input a non-empty value for credit hours.",
+                    "ERROR",
+                    JOptionPane.WARNING_MESSAGE);
+            newEditValue.setText("");
+            return -1;
+        } else {
+            try {
+                hours = Integer.parseInt(creditHours);
+            } catch (NumberFormatException m) {
+                JOptionPane.showMessageDialog(frame,
+                        "Please input only a number value for the number of credit hours.",
+                        "ERROR",
+                        JOptionPane.WARNING_MESSAGE);
+                newEditValue.setText("");
+                return -1;
+            }
+        }
+
+        if(hours < 0 || hours > 12) {
+            JOptionPane.showMessageDialog(frame,
+                    "Please input only positive numbers between 0 and 12 for the number of credit hours",
+                    "ERROR",
+                    JOptionPane.WARNING_MESSAGE);
+            newEditValue.setText("");
+            return -1;
+        }
+
+        return hours;
+    }
+
+    private void addRequirementComboCats() {
+        requirementsBox.addItem(new ComboItem("Main CS Requirement", "MainCS"));
+        requirementsBox.addItem(new ComboItem("Intro to Computing", "IntroComputing"));
+        requirementsBox.addItem(new ComboItem("CS 3000+ Elective", "CS3000Above"));
+        requirementsBox.addItem(new ComboItem("Natural Science", "NaturalScience"));
+        requirementsBox.addItem(new ComboItem("Theory", "Theory"));
+        requirementsBox.addItem(new ComboItem("Writing", "Writing"));
+        requirementsBox.addItem(new ComboItem("Ethics", "Ethics"));
+        requirementsBox.addItem(new ComboItem("Uncategorized Prereq/Coreq", "Uncategorized"));
+    }
+
+    private boolean removeFromDBViaCode(String code) {
+        Connection connection;
+
+        String sql = "DELETE FROM Courses " +
+                "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, code);
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to remove the course " + code.toUpperCase() + " from the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+    private ArrayList<Course> loadAllCourses() {
+        ArrayList<Course> coursesLoaded = new ArrayList<>();
+        String courseCode, description, attr, coreqList, requiredList, optionalList, type;
+        int creditHours;
+
+        coursesLoaded.clear();
+        Connection connection;
+
+        String sql = "SELECT * FROM Courses " +
+                "ORDER BY ID";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+
+        try(PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+
+            while(rs.next()) {
+                courseCode = rs.getString("Code");
+                description = rs.getString("Description");
+                creditHours = rs.getInt("CreditHours");
+                requiredList = rs.getString("ReqPrereqs");
+                optionalList = rs.getString("GroupPrereqs");
+                coreqList = rs.getString("Coreqs");
+                attr = rs.getString("Attributes");
+                type = rs.getString("Category");
+
+                Course c = new Course(courseCode, description, type, attr, coreqList, requiredList, optionalList, creditHours);
+
+                coursesLoaded.add(c);
+            }
+
+            return coursesLoaded;
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to obtain all courses the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+    }
+
+    private void addCourseEditCats(ArrayList<Course> DBCourses) {
+        for(int i = 0; i < DBCourses.size(); i++) {
+            editCourseSelector.addItem(new ComboItem(DBCourses.get(i).getCourseCode(), DBCourses.get(i).getCourseCode()));
+        }
+    }
+
+    private void addFieldEditCats() {
+        fieldEditComboBox.addItem(new ComboItem("Delete Item", "Delete Item"));
+        fieldEditComboBox.addItem(new ComboItem("Change Course Code", "Change Course Code"));
+        fieldEditComboBox.addItem(new ComboItem("Change Description", "Change Description"));
+        fieldEditComboBox.addItem(new ComboItem("Change Credit Hours", "Change Credit Hours"));
+        fieldEditComboBox.addItem(new ComboItem("Change Attributes", "Change Attributes"));
+        fieldEditComboBox.addItem(new ComboItem("Change Corequisites", "Change Corequisites"));
+        fieldEditComboBox.addItem(new ComboItem("Change Required Prerequisites", "Change Required Prerequisites"));
+        fieldEditComboBox.addItem(new ComboItem("Change Group Prerequisites", "Change Group Prerequisites"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to MainCS", "Change Category to MainCS"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to IntroComputing", "Change Category to IntroComputing"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to CS 3000+ Elective", "Change Category to CS 3000+ Elective"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to NaturalScience", "Change Category to NaturalScience"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to Theory", "Change Category to Theory"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to Writing", "Change Category to Writing"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to Ethics", "Change Category to Ethics"));
+        fieldEditComboBox.addItem(new ComboItem("Change Category to Uncategorized", "Change Category to Uncategorized"));
+    }
+
+    private boolean replaceSQLCourseCode(ArrayList<Course> DBCourses, String newCode, String oldCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET Code = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newCode);
+            ps.setString(2, oldCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + oldCode.toUpperCase() + " to " + newCode.toUpperCase() + ". Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if(findCourseViaCode(DBCourses, oldCode) != null) findCourseViaCode(DBCourses, oldCode).setCourseCode(newCode);
+
+        return true;
+    }
+
+    private boolean replaceSQLCreditHours(ArrayList<Course> DBCourses, int newHours, String courseCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET CreditHours = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, newHours);
+            ps.setString(2, courseCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + courseCode.toUpperCase() + "'s credit hours. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if(findCourseViaCode(DBCourses, courseCode) != null) findCourseViaCode(DBCourses, courseCode).setCreditHours(newHours);
+
+        return true;
+    }
+
+    private boolean replaceSQLDescription(ArrayList<Course> DBCourses, String newDescription, String courseCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET Description = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newDescription);
+            ps.setString(2, courseCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + courseCode.toUpperCase() + "'s description. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if(findCourseViaCode(DBCourses, courseCode) != null) findCourseViaCode(DBCourses, courseCode).setDescription(newDescription);
+
+        return true;
+    }
+
+    private boolean replaceSQLCoreqs(ArrayList<Course> DBCourses, String newCoreqs, String courseCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET Coreqs = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newCoreqs);
+            ps.setString(2, courseCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + courseCode.toUpperCase() + "'s corequisites. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if(findCourseViaCode(DBCourses, courseCode) != null) findCourseViaCode(DBCourses, courseCode).setCoreqList(newCoreqs);
+
+        return true;
+    }
+
+    private boolean replaceSQLReqPrereqs(ArrayList<Course> DBCourses, String newReqPrereqs, String courseCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET ReqPrereqs = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newReqPrereqs);
+            ps.setString(2, courseCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + courseCode.toUpperCase() + "'s required prerequisites. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if(findCourseViaCode(DBCourses, courseCode) != null) findCourseViaCode(DBCourses, courseCode).setRequired(newReqPrereqs);
+
+        return true;
+    }
+
+    private boolean replaceSQLGroupPrereqs(ArrayList<Course> DBCourses, String newGroupPrereqs, String courseCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET GroupPrereqs = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newGroupPrereqs);
+            ps.setString(2, courseCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + courseCode.toUpperCase() + "'s group prerequisites. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if(findCourseViaCode(DBCourses, courseCode) != null) findCourseViaCode(DBCourses, courseCode).setOptional(newGroupPrereqs);
+
+        return true;
+    }
+
+    private boolean replaceSQLCategory(String newCategory, String courseCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET Category = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newCategory);
+            ps.setString(2, courseCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + courseCode.toUpperCase() + "'s category. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean replaceSQLAttributes(ArrayList<Course> DBCourses, String newAttributes, String courseCode) {
+        Connection connection;
+        String sql = "UPDATE Courses "
+                + "SET Attributes = ? "
+                + "WHERE Code = ?";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newAttributes);
+            ps.setString(2, courseCode);
+
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to change course " + courseCode.toUpperCase() + "'s attributes. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if(findCourseViaCode(DBCourses, courseCode) != null) findCourseViaCode(DBCourses, courseCode).setAttr(newAttributes);
+
+        return true;
+    }
+
+    private Course findCourseViaCode(ArrayList<Course> courseList, String code) {
+        for(int i = 0; i < courseList.size(); i++) {
+            if(courseList.get(i).getCourseCode().equalsIgnoreCase(code)) return courseList.get(i);
+        }
+
+        return null;
+    }
+
+    private void setComboSelected(JComboBox comboBox, String value)
+    {
+        ComboItem item;
+
+        for (int i = 0; i < comboBox.getItemCount(); i++)
+        {
+            item = (ComboItem)comboBox.getItemAt(i);
+            if (item.getValue().equalsIgnoreCase(value))
+            {
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
     }
 
     public ScheduleGUI() {
@@ -201,11 +653,6 @@ public class ScheduleGUI {
                 String requiredPrereqs = reqPreField.getText().trim();
                 String groupPrereqs = groupPreField.getText().trim();
                 String creditHours = creditHourField.getText().trim();
-                boolean introToComp = introToComputingRadioButton.isSelected();
-                boolean naturalSci = naturalScienceRadioButton.isSelected();
-                boolean theory = theoryRadioButton.isSelected();
-                boolean writing = writingRadioButton.isSelected();
-                boolean csElective = csElectiveRadioButton.isSelected();
                 String category;
 
                 if(!errorCheckCodes(courseCode)) {
@@ -219,12 +666,8 @@ public class ScheduleGUI {
                     return;
                 }
 
-                if(introToComp) category = "IntroComputing";
-                else if(naturalSci) category = "NaturalScience";
-                else if(theory) category = "Theory";
-                else if(writing) category = "Writing";
-                else if(csElective) category = "CSElective";
-                else category = "MainCS";
+                Object temp = requirementsBox.getSelectedItem();
+                category = ((ComboItem)temp).getValue();
 
                 //if our error checking was fine we can now insert into course table.
                 String sql =
@@ -290,11 +733,6 @@ public class ScheduleGUI {
                 String requiredPrereqs = reqPreField.getText().trim();
                 String groupPrereqs = groupPreField.getText().trim();
                 String creditHours = creditHourField.getText().trim();
-                boolean introToComp = introToComputingRadioButton.isSelected();
-                boolean naturalSci = naturalScienceRadioButton.isSelected();
-                boolean theory = theoryRadioButton.isSelected();
-                boolean writing = writingRadioButton.isSelected();
-                boolean csElective = csElectiveRadioButton.isSelected();
                 String category;
 
                 if(!errorCheckCodes(courseCode)) {
@@ -309,12 +747,8 @@ public class ScheduleGUI {
                     return;
                 }
 
-                if(introToComp) category = "IntroComputing";
-                else if(naturalSci) category = "NaturalScience";
-                else if(theory) category = "Theory";
-                else if(writing) category = "Writing";
-                else if(csElective) category = "CSElective";
-                else category = "MainCS";
+                Object temp = requirementsBox.getSelectedItem();
+                category = ((ComboItem)temp).getValue();
 
                 //if our error checking was fine we can now insert into course table.
                 String sql =
@@ -372,6 +806,8 @@ public class ScheduleGUI {
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) wrapper.getLayout();
                 cl.show(wrapper, "additionCard");
+                addRequirementComboCats();
+                setComboSelected(requirementsBox, "MainCS");
             }
         });
         honorsButton.addActionListener(new ActionListener() {
@@ -391,6 +827,10 @@ public class ScheduleGUI {
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) wrapper.getLayout();
                 cl.show(wrapper, "editorCard");
+                ArrayList<Course> DBCourses = loadAllCourses();
+
+                addCourseEditCats(DBCourses);
+                addFieldEditCats();
             }
         });
 
@@ -422,67 +862,195 @@ public class ScheduleGUI {
                 cl.show(wrapper, "adminPortalCard");
             }
         });
-        confirmToPortalButton.addActionListener(new ActionListener() {
+        confirmEditToPortalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cl = (CardLayout) wrapper.getLayout();
-                cl.show(wrapper, "adminPortalCard");
-            }
-        });
-        introToComputingRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(introToComputingRadioButton.isSelected()) {
-                    if (naturalScienceRadioButton.isSelected()) naturalScienceRadioButton.setSelected(false);
-                    if (theoryRadioButton.isSelected()) theoryRadioButton.setSelected(false);
-                    if(writingRadioButton.isSelected()) writingRadioButton.setSelected(false);
-                    if(csElectiveRadioButton.isSelected()) csElectiveRadioButton.setSelected(false);
-                }
-            }
-        });
-        naturalScienceRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(naturalScienceRadioButton.isSelected()) {
-                    if (introToComputingRadioButton.isSelected()) introToComputingRadioButton.setSelected(false);
-                    if (theoryRadioButton.isSelected()) theoryRadioButton.setSelected(false);
-                    if(writingRadioButton.isSelected()) writingRadioButton.setSelected(false);
-                    if(csElectiveRadioButton.isSelected()) csElectiveRadioButton.setSelected(false);
-                }
-            }
-        });
-        theoryRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(theoryRadioButton.isSelected()) {
-                    if (naturalScienceRadioButton.isSelected()) naturalScienceRadioButton.setSelected(false);
-                    if (introToComputingRadioButton.isSelected()) introToComputingRadioButton.setSelected(false);
-                    if(writingRadioButton.isSelected()) writingRadioButton.setSelected(false);
-                    if(csElectiveRadioButton.isSelected()) csElectiveRadioButton.setSelected(false);
-                }
-            }
-        });
-        writingRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(writingRadioButton.isSelected()) {
-                    if (naturalScienceRadioButton.isSelected()) naturalScienceRadioButton.setSelected(false);
-                    if (theoryRadioButton.isSelected()) theoryRadioButton.setSelected(false);
-                    if(introToComputingRadioButton.isSelected()) introToComputingRadioButton.setSelected(false);
-                    if(csElectiveRadioButton.isSelected()) csElectiveRadioButton.setSelected(false);
-                }
-            }
-        });
+                Object temp = fieldEditComboBox.getSelectedItem();
+                String actionType = ((ComboItem)temp).getValue();
+                boolean noErrors = true;
 
-        csElectiveRadioButton.addActionListener(new ActionListener() {
+                temp = editCourseSelector.getSelectedItem();
+                String courseCode = ((ComboItem)temp).getValue();
+
+                String newInput = newEditValue.getText();
+
+                ArrayList<Course> DBCourses = loadAllCourses();
+                if(DBCourses == null) noErrors = false;
+
+                if(noErrors) {
+                    switch (actionType) {
+                        case "Delete Item":
+                            if(newInput.trim().equalsIgnoreCase("DELETE")) noErrors = removeFromDBViaCode(courseCode);
+                            else {
+                                JOptionPane.showMessageDialog(frame,
+                                        "Please enter \"DELETE\" into the text box to confirm deletion of the course.",
+                                        "ERROR",
+                                        JOptionPane.WARNING_MESSAGE);
+                                noErrors = false;
+                            }
+                            break;
+                        case "Change Course Code":
+                            if (errorCheckCodes(newInput)) {
+                                noErrors = replaceSQLCourseCode(DBCourses, newInput, courseCode);
+                            } else noErrors = false;
+                            break;
+                        case "Change Description":
+                            noErrors = replaceSQLDescription(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Credit Hours":
+                            int hours = errorCheckCreditEdit(newInput);
+                            if(hours == -1) noErrors = false;
+                            else {
+                                noErrors = replaceSQLCreditHours(DBCourses, hours, courseCode);
+                            }
+                            break;
+                        case "Change Attributes":
+                            noErrors = replaceSQLAttributes(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Corequisites":
+                            noErrors = replaceSQLCoreqs(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Required Prerequisites":
+                            noErrors = replaceSQLReqPrereqs(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Group Prerequisites":
+                            noErrors = replaceSQLGroupPrereqs(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Category to MainCS":
+                            noErrors = replaceSQLCategory("MainCS", courseCode);
+                            break;
+                        case "Change Category to IntroComputing":
+                            noErrors = replaceSQLCategory("IntroComputing", courseCode);
+                            break;
+                        case "Change Category to CS 3000+ Elective":
+                            noErrors = replaceSQLCategory("CS3000Above", courseCode);
+                            break;
+                        case "Change Category to NaturalScience":
+                            noErrors = replaceSQLCategory("NaturalScience", courseCode);
+                            break;
+                        case "Change Category to Theory":
+                            noErrors = replaceSQLCategory("Theory", courseCode);
+                            break;
+                        case "Change Category to Writing":
+                            noErrors = replaceSQLCategory("Writing", courseCode);
+                            break;
+                        case "Change Category to Ethics":
+                            noErrors = replaceSQLCategory("Ethics", courseCode);
+                            break;
+                        case "Change Category to Uncategorized":
+                            noErrors = replaceSQLCategory("Uncategorized", courseCode);
+                            break;
+                        default:
+                            noErrors = false;
+                    }
+                }
+
+                if(noErrors) {
+                    JOptionPane.showMessageDialog(frame,
+                            "You have successfully edited " + courseCode.toUpperCase() + " and updated the database to match.",
+                            "Success!",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    newEditValue.setText("");
+
+                    CardLayout cl = (CardLayout) wrapper.getLayout();
+                    cl.show(wrapper, "adminPortalCard");
+                } else {
+                    newEditValue.setText("");
+                }
+            }
+        });
+        confirmEditButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(csElectiveRadioButton.isSelected()) {
-                    if (naturalScienceRadioButton.isSelected()) naturalScienceRadioButton.setSelected(false);
-                    if (theoryRadioButton.isSelected()) theoryRadioButton.setSelected(false);
-                    if(writingRadioButton.isSelected()) writingRadioButton.setSelected(false);
-                    if(introToComputingRadioButton.isSelected()) introToComputingRadioButton.setSelected(false);
+                Object temp = fieldEditComboBox.getSelectedItem();
+                String actionType = ((ComboItem)temp).getValue();
+                boolean noErrors = true;
+
+                temp = editCourseSelector.getSelectedItem();
+                String courseCode = ((ComboItem)temp).getValue();
+
+                String newInput = newEditValue.getText();
+
+                ArrayList<Course> DBCourses = loadAllCourses();
+                if(DBCourses == null) noErrors = false;
+
+                if(noErrors) {
+                    switch (actionType) {
+                        case "Delete Item":
+                            if(newInput.trim().equalsIgnoreCase("DELETE")) noErrors = removeFromDBViaCode(courseCode);
+                            else {
+                                JOptionPane.showMessageDialog(frame,
+                                        "Please enter \"DELETE\" into the text box to confirm deletion of the course.",
+                                        "ERROR",
+                                        JOptionPane.WARNING_MESSAGE);
+                                noErrors = false;
+                            }
+                            break;
+                        case "Change Course Code":
+                            if (errorCheckCodes(newInput)) {
+                                noErrors = replaceSQLCourseCode(DBCourses, newInput, courseCode);
+                            } else noErrors = false;
+                            break;
+                        case "Change Description":
+                            noErrors = replaceSQLDescription(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Credit Hours":
+                            int hours = errorCheckCreditEdit(newInput);
+                            if(hours == -1) noErrors = false;
+                            else {
+                                noErrors = replaceSQLCreditHours(DBCourses, hours, courseCode);
+                            }
+                            break;
+                        case "Change Attributes":
+                            noErrors = replaceSQLAttributes(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Corequisites":
+                            noErrors = replaceSQLCoreqs(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Required Prerequisites":
+                            noErrors = replaceSQLReqPrereqs(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Group Prerequisites":
+                            noErrors = replaceSQLGroupPrereqs(DBCourses, newInput, courseCode);
+                            break;
+                        case "Change Category to MainCS":
+                            noErrors = replaceSQLCategory("MainCS", courseCode);
+                            break;
+                        case "Change Category to IntroComputing":
+                            noErrors = replaceSQLCategory("IntroComputing", courseCode);
+                            break;
+                        case "Change Category to CS 3000+ Elective":
+                            noErrors = replaceSQLCategory("CS3000Above", courseCode);
+                            break;
+                        case "Change Category to NaturalScience":
+                            noErrors = replaceSQLCategory("NaturalScience", courseCode);
+                            break;
+                        case "Change Category to Theory":
+                            noErrors = replaceSQLCategory("Theory", courseCode);
+                            break;
+                        case "Change Category to Writing":
+                            noErrors = replaceSQLCategory("Writing", courseCode);
+                            break;
+                        case "Change Category to Ethics":
+                            noErrors = replaceSQLCategory("Ethics", courseCode);
+                            break;
+                        case "Change Category to Uncategorized":
+                            noErrors = replaceSQLCategory("Uncategorized", courseCode);
+                            break;
+                        default:
+                            noErrors = false;
+                    }
                 }
+
+                if(noErrors) {
+                    JOptionPane.showMessageDialog(frame,
+                            "You have successfully edited " + courseCode.toUpperCase() + " and updated the database to match.",
+                            "Success!",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                newEditValue.setText("");
             }
         });
     }

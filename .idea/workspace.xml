@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15379a65-be8d-49c3-b31d-6b97b7e6b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/ui/ComboItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clemson Student Scheduler - Fall 2021 Honors Contract.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Clemson Student Scheduler - Fall 2021 Honors Contract.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/db/DBUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/db/DBUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/scheduling/Course.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/scheduling/Course.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$10.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$11.class" afterDir="false" />
@@ -14,7 +12,12 @@
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$14.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$15.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$16.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$17.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$18.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$19.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$20.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$21.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$5.class" afterDir="false" />
@@ -23,12 +26,9 @@
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$8.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/ScheduleGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Clemson Student Scheduler - Fall 2021 Honors Contract/ui/Scheduler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db/DBUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/DBUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scheduling/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scheduling/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/ScheduleGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ScheduleGUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/ScheduleGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ScheduleGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/Scheduler.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +65,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="false" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW" value="true" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW" value="false" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="216" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Connector J 8.0/mysql-connector-java-8.0.27.jar" />
     <property name="project.structure.last.edited" value="Modules" />
