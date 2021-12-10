@@ -140,6 +140,11 @@ public class Course {
         //edge case: we don't have required preqs. then we can just return true:
         if(requiredList.length() == 0) return true;
 
+        if(requiredList.charAt(0) == '!') requiredList = requiredList.substring(1);
+        if(requiredList.length() != 0) {
+            if(requiredList.charAt(requiredList.length() - 1) == '!') requiredList = requiredList.substring(0, requiredList.length() - 1);
+        }
+
         String[] separatedRequirements = requiredList.split("-");
 
         for(int i = 0; i < separatedRequirements.length; i++) {
@@ -157,15 +162,20 @@ public class Course {
 
     private boolean processOptional(HashMap<String, Integer> inputCodes) {
         //Separate group prerequisites with exclamation marks-E.G. '!MATH 1070-MATH 1080!CPSC 1020-CPSC 1010!'
-
         //edge case: we don't have optional preqs. then we can just return true:
         if(optionalList.length() == 0) return true;
+
+        if(optionalList.charAt(0) == '!') optionalList = optionalList.substring(1);
+
+        if(optionalList.length() != 0) {
+            if(optionalList.charAt(optionalList.length() - 1) == '!') optionalList = optionalList.substring(0, optionalList.length() - 1);
+        }
 
         String[] separatedGroups = optionalList.split("!");
         int fulfilledCounter = 0, amountOfGroups = 0;
 
         for(int i = 0; i < separatedGroups.length; i++) {
-            if(separatedGroups[i].trim().length() == 0) continue; //takes care of any extra exclamation marks
+            if(separatedGroups[i].trim().length() == 0) continue; //extra check for extra exclamation marks
 
             //other than empty portions we want to keep track of every group fulfilled so we need to count the amt of groups for that course
             amountOfGroups++;
@@ -194,6 +204,14 @@ public class Course {
     //returns an arraylist of corequisites for scheduler to use
     //only returns those the student has not yet taken
     public ArrayList<String> getProcessedCoreqs(HashMap<String, Integer> inputCodes) {
+        if(coreqList.length() == 0) return null;
+
+        if(coreqList.charAt(0) == '!') coreqList = coreqList.substring(1);
+        if(coreqList.length() != 0) {
+            if (coreqList.charAt(coreqList.length() - 1) == '!')
+                coreqList = coreqList.substring(0, coreqList.length() - 1);
+        }
+
         String[] coreqCodes = coreqList.split("-");
         ArrayList<String> processedCodes = new ArrayList<>();
 
@@ -209,6 +227,8 @@ public class Course {
 
     //returns the attributes this course has in an arraylist for the scheduler to use
     public ArrayList<String> getProcessedAttributes() {
+        if(attr.length() == 0) return null;
+
         String[] attrCodes = attr.split("-");
         ArrayList<String> processedCodes = new ArrayList<>();
 

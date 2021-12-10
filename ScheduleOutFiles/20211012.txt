@@ -1,0 +1,13 @@
+SEMESTER 1: 
+ENGL 1030-Composition and Rhetoric: 3 credit hours; Category in Curriculum: MainCS
+ENGL 1031-Composition and Rhetoric Laboratory: 0 credit hours; Category in Curriculum: MainCS
+CPSC 1111-Introduction to Programming in C Laboratory: 0 credit hours; Category in Curriculum: IntroComputing
+BIOL 1050-General Biology I Laboratory: 1 credit hours; Category in Curriculum: NaturalScience
+CPSC 2920-Computing, Ethics, and Global Society: 3 credit hours; Category in Curriculum: Ethics
+CPSC 2921-Computing, Ethics, and Global Society Recitation: 0 credit hours; Category in Curriculum: Ethics
+CPSC 1010-Computer Science I: 4 credit hours; Category in Curriculum: IntroComputing
+CPSC 1011-Computer Science I Laboratory: 0 credit hours; Category in Curriculum: IntroComputing
+BIOL 1040-General Biology II: 3 credit hours; Category in Curriculum: NaturalScience
+BIOL 1060-General Biology II Laboratory: 1 credit hours; Category in Curriculum: NaturalScience
+DPA 3070-Studio Methods for Digital Production: 3 credit hours; Category in Curriculum: CS3000Above
+
