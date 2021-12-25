@@ -6,7 +6,7 @@
 Scheduling GUI program that uses user input (i.e. max credits per semester, semesters left, classes already taken..) and walks the user through creating a semi-automatic semester-by-semester schedule.<br>
 
 <h2>Admin Controls</h2>
-If the user is an admin, they can freely add classes and update any already in the database, as well as view all classes according to category.<br>
+If the user is an admin, they can freely add classes and update any already in the database, as well as view all classes according to category.<br><br>
 - Classes have several different options for categories, corresponding to types of classes that need to be fulfilled before graduation. For example, CPSC 1060 and 1070 fall under Intro to Computer Science, whereas GEOL 1010 and 1020 fall under Natural Science.<br>
 - Classes also have required course code, title, and credit hour attributes, as well as optional corequisite, required prerequisite, and group prerequisites attributes that are input in a format that the program can then use to parse and algorithmically form a schedule.<br>
 - "Required" prerequisites are those that are collectively required classes (for example, if a student were required to take Algebra 1 and 2 before Precalculus, they would be considered required). If they are within groups of classes where only one of each group is needed, the prerequisite is considered a "group" prerequisite (for example, if a student were required to take one of CPSC 1060 or 1070, and also one of either CPSC 1010 or 1020, these would be considered groups).<br>
