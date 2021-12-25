@@ -1,5 +1,5 @@
 # Clemson CS Student Scheduler
-<h2>Jenna Hofseth, Fall 2021-present?</h2>
+<h2>Jenna Hofseth, Fall 2021-*present?*</h2>
 <h3>Java with Swing, AWS (RDS & EC2), MySQL</h3>
 
 (DB CURRENTLY DOWN; MYSQL QUERY FILE IN REPO)
