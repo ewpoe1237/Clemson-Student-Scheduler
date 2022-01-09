@@ -17,10 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class ScheduleGUI {
     private JPanel wrapper;
@@ -151,8 +149,168 @@ public class ScheduleGUI {
         honorsStudent = false;
         wantToExport = false;
     }
+
+    private ArrayList<Course> loadAllCourses(ArrayList<Course> coursesLoaded) {
+        //Loads all courses from the database into the coursesLoaded arraylist.
+        String courseCode, description, attr, coreqList, requiredList, optionalList, type;
+        int creditHours;
+        Connection connection;
+
+        String sql = "SELECT * FROM Courses " +
+                "ORDER BY ID";
+        try {
+            connection = DBUtil.getConnection();
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to connect to the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+
+        try(PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+
+            while(rs.next()) {
+                courseCode = rs.getString("Code");
+                description = rs.getString("Description");
+                creditHours = rs.getInt("CreditHours");
+                requiredList = rs.getString("ReqPrereqs");
+                optionalList = rs.getString("GroupPrereqs");
+                coreqList = rs.getString("Coreqs");
+                attr = rs.getString("Attributes");
+                type = rs.getString("Category");
+
+                Course c = new Course(courseCode, description, type, attr, coreqList, requiredList, optionalList, creditHours);
+
+                coursesLoaded.add(c);
+            }
+
+            return coursesLoaded;
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(frame,
+                    "There was an error trying to obtain all courses the DB. Please try again.",
+                    "ERROR: " + e.getErrorCode(),
+                    JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+    }
+
+    private void updateCreditsSpent(ArrayList<Course> courses) {
+        //Updates the amount of credits spent according to courses in the current schedule's arraylist
+        for(int i = 0; i < courses.size(); i++) {
+            creditsSpent += courses.get(i).getCreditHours();
+        }
+    }
+
+    private void updateUsedCourses(Course myCourse, int[] categoriesUsed) {
+        //Updates how many courses have been used in each category for this schedule
+        //per semester load
+        //0) MainCS 1) IntroComputing 2) CS3000Above 3) NaturalScience 4) Statistics 5) Theory 6) Writing 7) Ethics 8) Uncategorized
+        switch(myCourse.getType()) {
+            case "MainCS":
+                categoriesUsed[0]++;
+                break;
+            case "IntroComputing":
+                categoriesUsed[1]++;
+                break;
+            case "CS3000Above":
+                categoriesUsed[2]++;
+                break;
+            case "NaturalScience":
+                categoriesUsed[3]++;
+                break;
+            case "Statistics":
+                categoriesUsed[4]++;
+                break;
+            case "Theory":
+                categoriesUsed[5]++;
+                break;
+            case "Writing":
+                categoriesUsed[6]++;
+                break;
+            case "Ethics":
+                categoriesUsed[7]++;
+                break;
+            case "Uncategorized":
+                categoriesUsed[8]++;
+                break;
+        }
+    }
+
+    private void updateCategoryCreditCount(Course myCourse) {
+        //Updates the amount of credits per category that exist in our current schedule, according to the parameter course's type.
+
+        //private int[] maxCategoryCredits = {100, 8, 16, 16, 3, 3, 3, 6, 100}
+        //1) MainCS 2) IntroComputing 3) CS3000Above 4) NaturalScience 5) Statistics 6) Theory 7) Writing 8) Ethics 9) Uncategorized
+        //private int[] categoryCreditCount = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        //private HashMap<String, Boolean> usedRequirements = new HashMap<>();
+        switch(myCourse.getType()) {
+            case "MainCS":
+                categoryCreditCount[0] += myCourse.getCreditHours();
+                if(categoryCreditCount[0] >= maxCategoryCredits[0]) usedRequirements.put("MainCS", true);
+                break;
+            case "IntroComputing":
+                categoryCreditCount[1] += myCourse.getCreditHours();
+                if(categoryCreditCount[1] >= maxCategoryCredits[1]) usedRequirements.put("IntroComputing", true);
+                break;
+            case "CS3000Above":
+                categoryCreditCount[2] += myCourse.getCreditHours();
+                if(categoryCreditCount[2] >= maxCategoryCredits[2]) usedRequirements.put("CS3000Above", true);
+                break;
+            case "NaturalScience":
+                categoryCreditCount[3] += myCourse.getCreditHours();
+                if(categoryCreditCount[3] >= maxCategoryCredits[3]) usedRequirements.put("NaturalScience", true);
+                break;
+            case "Statistics":
+                categoryCreditCount[4] += myCourse.getCreditHours();
+                if(categoryCreditCount[4] >= maxCategoryCredits[4]) usedRequirements.put("Statistics", true);
+                break;
+            case "Theory":
+                categoryCreditCount[5] += myCourse.getCreditHours();
+                if(categoryCreditCount[5] >= maxCategoryCredits[5]) usedRequirements.put("Theory", true);
+                break;
+            case "Writing":
+                categoryCreditCount[6] += myCourse.getCreditHours();
+                if(categoryCreditCount[6] >= maxCategoryCredits[6]) usedRequirements.put("Writing", true);
+                break;
+            case "Ethics":
+                categoryCreditCount[7] += myCourse.getCreditHours();
+                if(categoryCreditCount[7] >= maxCategoryCredits[7]) usedRequirements.put("Ethics", true);
+                break;
+            case "Uncategorized":
+                categoryCreditCount[8] += myCourse.getCreditHours();
+                if(categoryCreditCount[8] >= maxCategoryCredits[8]) usedRequirements.put("Uncategorized", true);
+                break;
+        }
+    }
+
+    private void updateCompletedRequirements() {
+        //Updates the amount of credits with the corresponding requirements
+
+        // private void updateCategoryCreditCount(Course myCourse) {
+        // private int[] maxCategoryCredits = {100, 8, 16, 16, 3, 3, 3, 6, 100}
+        // 1) MainCS 2) IntroComputing 3) CS3000Above 4) NaturalScience 5) Statistics 6) Theory 7) Writing 8) Ethics 9) Uncategorized
+        // private int[] categoryCreditCount = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+        //Read from courses loaded and use the max amt of possible credits in the maincs category to get the max amt of credits for mainCS
+        int cumulativeCSCredits = 0;
+        for(int i = 0; i < coursesLoaded.size(); i++) {
+            if(coursesLoaded.get(i).getType().equalsIgnoreCase("MainCS")) cumulativeCSCredits += coursesLoaded.get(i).getCreditHours();
+        }
+
+        maxCategoryCredits[0] = cumulativeCSCredits;
+
+        //loop through courses loaded and if we have input a course that is in that category add to the cumulative credit count of that category
+        for(int i = 0; i < coursesLoaded.size(); i++) {
+            if(inputCourses.containsKey(coursesLoaded.get(i).getCourseCode())) {
+                updateCategoryCreditCount(coursesLoaded.get(i));
+            }
+        }
+    }
+
     private String extractTextFromType(String inputType) {
-        // String output = "<html>";
+        //gets all courses of a specific type and returns the info as a string
         String output = "";
         String courseCode, description, attr, coreqList, requiredList, optionalList, type;
         int creditHours;
@@ -254,8 +412,6 @@ public class ScheduleGUI {
                 }
 
             }
-
-         //   output += "</html>";
             return output;
         } catch(SQLException e) {
             JOptionPane.showMessageDialog(frame,
@@ -295,6 +451,7 @@ public class ScheduleGUI {
     }
 
     private int errorCheckCredits(String creditHours) {
+        //error checks input to see whether new input credit hours is allowed
         int hours = -1;
         creditHours = creditHours.trim();
 
@@ -330,40 +487,49 @@ public class ScheduleGUI {
         return hours;
     }
 
-    private int errorCheckCreditEdit(String creditHours) {
-        int hours = -1;
-        creditHours = creditHours.trim();
+    public boolean checkCategory(String cat, int[] categoriesUsed) {
+        //returns false if the category has already been fulfilled while scheduling
 
-        if(creditHours == "") {
-            JOptionPane.showMessageDialog(frame,
-                    "Please input a non-empty value for credit hours.",
-                    "ERROR",
-                    JOptionPane.WARNING_MESSAGE);
-            newEditValue.setText("");
-            return -1;
-        } else {
-            try {
-                hours = Integer.parseInt(creditHours);
-            } catch (NumberFormatException m) {
-                JOptionPane.showMessageDialog(frame,
-                        "Please input only a number value for the number of credit hours.",
-                        "ERROR",
-                        JOptionPane.WARNING_MESSAGE);
-                newEditValue.setText("");
-                return -1;
-            }
+        //private int[] maxCategoryCredits = {100, 8, 16, 16, 3, 3, 3, 6, 100}
+        //0) MainCS 1) IntroComputing 2) CS3000Above 3) NaturalScience 4) Statistics 5) Theory 6) Writing 7) Ethics 8) Uncategorized
+        //private int[] categoryCreditCount = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        switch(cat) {
+            case "MainCS":
+            case "Uncategorized":
+                return true;
+            case "IntroComputing":
+                if(categoriesUsed[1] >= 1) return false;
+                break;
+            case "CS3000Above":
+                if(categoriesUsed[2] >= 4) return false;
+                break;
+            case "NaturalScience":
+                if(categoriesUsed[3] >= 1) return false;
+                break;
+            case "Statistics":
+                if(categoriesUsed[4] >= 1) {
+                    usedRequirements.put("Statistics", true);
+                    return false;
+                }
+                break;
+            case "Theory":
+                if(categoriesUsed[5] >= 1) {
+                    usedRequirements.put("Theory", true);
+                    return false;
+                }
+                break;
+            case "Writing":
+                if(categoriesUsed[6] >= 1) {
+                    usedRequirements.put("Writing", true);
+                    return false;
+                }
+                break;
+            case "Ethics":
+                if(categoriesUsed[7] >= 1) return false;
+                break;
         }
 
-        if(hours < 0 || hours > 12) {
-            JOptionPane.showMessageDialog(frame,
-                    "Please input only positive numbers between 0 and 12 for the number of credit hours",
-                    "ERROR",
-                    JOptionPane.WARNING_MESSAGE);
-            newEditValue.setText("");
-            return -1;
-        }
-
-        return hours;
+        return true;
     }
 
     private void addRequirementComboCats(JComboBox box) {
@@ -408,51 +574,6 @@ public class ScheduleGUI {
         return true;
     }
 
-    private ArrayList<Course> loadAllCourses(ArrayList<Course> coursesLoaded) {
-        String courseCode, description, attr, coreqList, requiredList, optionalList, type;
-        int creditHours;
-        Connection connection;
-
-        String sql = "SELECT * FROM Courses " +
-                "ORDER BY ID";
-        try {
-            connection = DBUtil.getConnection();
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(frame,
-                    "There was an error trying to connect to the DB. Please try again.",
-                    "ERROR: " + e.getErrorCode(),
-                    JOptionPane.WARNING_MESSAGE);
-            return null;
-        }
-
-        try(PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()) {
-
-            while(rs.next()) {
-                courseCode = rs.getString("Code");
-                description = rs.getString("Description");
-                creditHours = rs.getInt("CreditHours");
-                requiredList = rs.getString("ReqPrereqs");
-                optionalList = rs.getString("GroupPrereqs");
-                coreqList = rs.getString("Coreqs");
-                attr = rs.getString("Attributes");
-                type = rs.getString("Category");
-
-                Course c = new Course(courseCode, description, type, attr, coreqList, requiredList, optionalList, creditHours);
-
-                coursesLoaded.add(c);
-            }
-
-            return coursesLoaded;
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(frame,
-                    "There was an error trying to obtain all courses the DB. Please try again.",
-                    "ERROR: " + e.getErrorCode(),
-                    JOptionPane.WARNING_MESSAGE);
-            return null;
-        }
-    }
-
     private boolean compareTypeToMaxCredits(Course myCourse) {
         //private int[] maxCategoryCredits = {100, 8, 16, 16, 3, 3, 3, 6, 100}
         //1) MainCS 2) IntroComputing 3) CS3000Above 4) NaturalScience 5) Statistics 6) Theory 7) Writing 8) Ethics 9) Uncategorized
@@ -488,51 +609,6 @@ public class ScheduleGUI {
         }
 
         return false;
-    }
-
-    private void updateCategoryCreditCount(Course myCourse) {
-        //private int[] maxCategoryCredits = {100, 8, 16, 16, 3, 3, 3, 6, 100}
-        //1) MainCS 2) IntroComputing 3) CS3000Above 4) NaturalScience 5) Statistics 6) Theory 7) Writing 8) Ethics 9) Uncategorized
-        //private int[] categoryCreditCount = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        //private HashMap<String, Boolean> usedRequirements = new HashMap<>();
-        switch(myCourse.getType()) {
-            case "MainCS":
-                categoryCreditCount[0] += myCourse.getCreditHours();
-                if(categoryCreditCount[0] >= maxCategoryCredits[0]) usedRequirements.put("MainCS", true);
-                break;
-            case "IntroComputing":
-                categoryCreditCount[1] += myCourse.getCreditHours();
-                if(categoryCreditCount[1] >= maxCategoryCredits[1]) usedRequirements.put("IntroComputing", true);
-                break;
-            case "CS3000Above":
-                categoryCreditCount[2] += myCourse.getCreditHours();
-                if(categoryCreditCount[2] >= maxCategoryCredits[2]) usedRequirements.put("CS3000Above", true);
-                break;
-            case "NaturalScience":
-                categoryCreditCount[3] += myCourse.getCreditHours();
-                if(categoryCreditCount[3] >= maxCategoryCredits[3]) usedRequirements.put("NaturalScience", true);
-                break;
-            case "Statistics":
-                categoryCreditCount[4] += myCourse.getCreditHours();
-                if(categoryCreditCount[4] >= maxCategoryCredits[4]) usedRequirements.put("Statistics", true);
-                break;
-            case "Theory":
-                categoryCreditCount[5] += myCourse.getCreditHours();
-                if(categoryCreditCount[5] >= maxCategoryCredits[5]) usedRequirements.put("Theory", true);
-                break;
-            case "Writing":
-                categoryCreditCount[6] += myCourse.getCreditHours();
-                if(categoryCreditCount[6] >= maxCategoryCredits[6]) usedRequirements.put("Writing", true);
-                break;
-            case "Ethics":
-                categoryCreditCount[7] += myCourse.getCreditHours();
-                if(categoryCreditCount[7] >= maxCategoryCredits[7]) usedRequirements.put("Ethics", true);
-                break;
-            case "Uncategorized":
-                categoryCreditCount[8] += myCourse.getCreditHours();
-                if(categoryCreditCount[8] >= maxCategoryCredits[8]) usedRequirements.put("Uncategorized", true);
-                break;
-        }
     }
 
     private void removeCreditCount(Course myCourse) {
@@ -578,83 +654,6 @@ public class ScheduleGUI {
                 if(categoryCreditCount[8] < maxCategoryCredits[8]) usedRequirements.remove("Uncategorized");
                 break;
         }
-    }
-
-    private void updateUsedCourses(Course myCourse, int[] categoriesUsed) {
-        //per semester load
-        //0) MainCS 1) IntroComputing 2) CS3000Above 3) NaturalScience 4) Statistics 5) Theory 6) Writing 7) Ethics 8) Uncategorized
-        switch(myCourse.getType()) {
-            case "MainCS":
-                categoriesUsed[0]++;
-                break;
-            case "IntroComputing":
-                categoriesUsed[1]++;
-                break;
-            case "CS3000Above":
-                categoriesUsed[2]++;
-                break;
-            case "NaturalScience":
-                categoriesUsed[3]++;
-                break;
-            case "Statistics":
-                categoriesUsed[4]++;
-                break;
-            case "Theory":
-                categoriesUsed[5]++;
-                break;
-            case "Writing":
-                categoriesUsed[6]++;
-                break;
-            case "Ethics":
-                categoriesUsed[7]++;
-                break;
-            case "Uncategorized":
-                categoriesUsed[8]++;
-                break;
-        }
-    }
-
-    public boolean checkCategory(String cat, int[] categoriesUsed) {
-        //private int[] maxCategoryCredits = {100, 8, 16, 16, 3, 3, 3, 6, 100}
-        //0) MainCS 1) IntroComputing 2) CS3000Above 3) NaturalScience 4) Statistics 5) Theory 6) Writing 7) Ethics 8) Uncategorized
-        //private int[] categoryCreditCount = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        switch(cat) {
-            case "MainCS":
-            case "Uncategorized":
-                return true;
-            case "IntroComputing":
-                if(categoriesUsed[1] >= 1) return false;
-                break;
-            case "CS3000Above":
-                if(categoriesUsed[2] >= 4) return false;
-                break;
-            case "NaturalScience":
-                if(categoriesUsed[3] >= 1) return false;
-                break;
-            case "Statistics":
-                if(categoriesUsed[4] >= 1) {
-                    usedRequirements.put("Statistics", true);
-                    return false;
-                }
-                break;
-            case "Theory":
-                if(categoriesUsed[5] >= 1) {
-                    usedRequirements.put("Theory", true);
-                    return false;
-                }
-                break;
-            case "Writing":
-                if(categoriesUsed[6] >= 1) {
-                    usedRequirements.put("Writing", true);
-                    return false;
-                }
-                break;
-            case "Ethics":
-                if(categoriesUsed[7] >= 1) return false;
-                break;
-        }
-
-        return true;
     }
 
     private ArrayList<Course> getCoursesToSchedule(int maxCredits, ArrayList<String> categoriesToFulfill) {
@@ -799,6 +798,7 @@ public class ScheduleGUI {
     }
 
     private int getGroupCredits(ArrayList<Course> courses, String category) {
+        //gets the total amount of credits in the specified category
         int credits = 0;
         for(int i = 0; i < courses.size(); i++) {
             if(courses.get(i).getType().equalsIgnoreCase(category)) credits += courses.get(i).getCreditHours();
@@ -886,14 +886,9 @@ public class ScheduleGUI {
     }
 
     private void addCourseEditCats(ArrayList<Course> DBCourses) {
+        //adds db courses into list of those available to edit
         for(int i = 0; i < DBCourses.size(); i++) {
             editCourseSelector.addItem(new ComboItem(DBCourses.get(i).getCourseCode() + " - " + DBCourses.get(i).getDescription(), DBCourses.get(i).getCourseCode()));
-        }
-    }
-
-    private void updateCreditsSpent(ArrayList<Course> courses) {
-        for(int i = 0; i < courses.size(); i++) {
-            creditsSpent += courses.get(i).getCreditHours();
         }
     }
 
@@ -1197,14 +1192,13 @@ public class ScheduleGUI {
 
     private Course findNonLabViaCategory(ArrayList<Course> courseList, String category) {
         for(int i = 0; i < courseList.size(); i++) {
-            if(courseList.get(i).getType().equalsIgnoreCase(category) && !courseList.get(i).getDescription().contains("Laboratory") && !courseList.get(i).getDescription().contains("Recitation")) return courseList.get(i);
+            if(courseList.get(i).getType().equalsIgnoreCase(category) && !courseList.get(i).getDescription().toLowerCase().contains("laboratory") && !courseList.get(i).getDescription().toLowerCase().contains("recitation")) return courseList.get(i);
         }
 
         return null;
     }
 
-    private void setComboSelected(JComboBox comboBox, String value)
-    {
+    private void setComboSelected(JComboBox comboBox, String value) {
         ComboItem item;
 
         for (int i = 0; i < comboBox.getItemCount(); i++)
@@ -1280,27 +1274,8 @@ public class ScheduleGUI {
         myLabel.setText(toEdit.toUpperCase());
     }
 
-    private void updateCompletedRequirements() {
-        // private void updateCategoryCreditCount(Course myCourse) {
-        //        //private int[] maxCategoryCredits = {100, 8, 16, 16, 3, 3, 3, 6, 100}
-        //        //1) MainCS 2) IntroComputing 3) CS3000Above 4) NaturalScience 5) Statistics 6) Theory 7) Writing 8) Ethics 9) Uncategorized
-        //        //private int[] categoryCreditCount = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        int cumulativeCSCredits = 0;
-        for(int i = 0; i < coursesLoaded.size(); i++) {
-            if(coursesLoaded.get(i).getType().equalsIgnoreCase("MainCS")) cumulativeCSCredits += coursesLoaded.get(i).getCreditHours();
-        }
-
-        maxCategoryCredits[0] = cumulativeCSCredits;
-
-        for(int i = 0; i < coursesLoaded.size(); i++) {
-            if(inputCourses.containsKey(coursesLoaded.get(i).getCourseCode())) {
-                updateCategoryCreditCount(coursesLoaded.get(i));
-            }
-        }
-
-    }
-
     public void updateSchedule() {
+        //The function that actually writes to the schedule from the algorithm reading DB info
         ArrayList<String> categoriesToFulfill = new ArrayList<>();
         currentSchedule.clear();
 
@@ -1308,7 +1283,7 @@ public class ScheduleGUI {
 
         switch(semestersLeft) {
             case 8:
-                //private ArrayList<Course> getCoursesToSchedule(int maxCredits, String[] categoriesToFulfill) {
+                //private ArrayList<Course> getCoursesToSchedule(int maxCredits, String[] categoriesToFulfill)
                 semesterTitle.setText("Clemson Undergraduate CS Scheduler - SEMESTER ONE");
                 for(int i = 0; i < mainCategories.length && i < 3; i++) {
                     if(!usedRequirements.containsKey(mainCategories[i])) categoriesToFulfill.add(mainCategories[i]);
@@ -1407,8 +1382,6 @@ public class ScheduleGUI {
                 populateUsableCourses(theoryBox, "Theory", maxCredits - creditsSpent + getGroupCredits(currentSchedule, "Theory"));
                 populateUsableCourses(CS3000Box, "CS3000Above", maxCredits - creditsSpent + getGroupCredits(currentSchedule, "CS3000Above"));
                 populateUsableCourses(writingBox, "Writing", maxCredits - creditsSpent + getGroupCredits(currentSchedule, "Writing"));
-
-                currentSchedule = currentSchedule;
                 break;
             case 5:
                 semesterTitle.setText("Clemson Undergraduate CS Scheduler - SEMESTER FOUR");
@@ -1442,8 +1415,6 @@ public class ScheduleGUI {
                 populateUsableCourses(theoryBox, "Theory", maxCredits - creditsSpent + getGroupCredits(currentSchedule, "Theory"));
                 populateUsableCourses(CS3000Box, "CS3000Above", maxCredits - creditsSpent + getGroupCredits(currentSchedule, "CS3000Above"));
                 populateUsableCourses(writingBox, "Writing", maxCredits - creditsSpent + getGroupCredits(currentSchedule, "Writing"));
-
-                currentSchedule = currentSchedule;
                 break;
             case 4:
                 semesterTitle.setText("Clemson Undergraduate CS Scheduler - SEMESTER FIVE");
@@ -1964,7 +1935,7 @@ public class ScheduleGUI {
                             noErrors = replaceSQLDescription(coursesLoaded, newInput, courseCode);
                             break;
                         case "Change Credit Hours":
-                            int hours = errorCheckCreditEdit(newInput);
+                            int hours = errorCheckCredits(newInput);
                             if(hours == -1) noErrors = false;
                             else {
                                 noErrors = replaceSQLCreditHours(coursesLoaded, hours, courseCode);
@@ -2070,7 +2041,7 @@ public class ScheduleGUI {
                             noErrors = replaceSQLDescription(coursesLoaded, newInput, courseCode);
                             break;
                         case "Change Credit Hours":
-                            int hours = errorCheckCreditEdit(newInput);
+                            int hours = errorCheckCredits(newInput);
                             if(hours == -1) noErrors = false;
                             else {
                                 noErrors = replaceSQLCreditHours(coursesLoaded, hours, courseCode);
